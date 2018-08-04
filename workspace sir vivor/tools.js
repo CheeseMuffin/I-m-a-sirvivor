@@ -49,7 +49,6 @@ const nullCharactersRegex = new RegExp('[\u0000\u200B-\u200F]+', 'g');
 * @property {{[k: string]: Item}} items
 * @property {{[k: string]: Ability}} abilities
 * @property {{[k: string]: string}} aliases
-* @property {{[k: string]: Learnset}} learnsets
 * @property {{[k: string]: TypeChart}} typeChart
 * @property {{[k: string]: FormatData}} formatsData
 * @property {Array<string>} badges
@@ -67,7 +66,6 @@ class Tools {
 			items: {},
 			abilities: {},
 			aliases: {},
-			learnsets: {},
 			typeChart: {},
 			formatsData: {},
 			badges: [],
@@ -108,7 +106,6 @@ class Tools {
 		this.loadItems();
 		this.loadAbilities();
 		this.loadAliases();
-		this.loadLearnsets();
 		this.loadFormatsData();
 		this.loadBadges();
 		this.loadCharacters();
@@ -184,20 +181,6 @@ class Tools {
 			}
 		}
 		if (aliases) this.data.aliases = aliases;
-	}
-
-	loadLearnsets() {
-		if (this.loadedData) this.PokemonCache.clear();
-
-		let learnsets;
-		try {
-			learnsets = require(this.dataFilePath + 'learnsets.js').BattleLearnsets;
-		} catch (e) {
-			if (e.code !== 'MODULE_NOT_FOUND') {
-				throw e;
-			}
-		}
-		if (learnsets) this.data.learnsets = learnsets;
 	}
 
 	loadFormatsData() {
@@ -505,7 +488,7 @@ class Tools {
 			}
 			return null;
 		}
-		pokemon = new Data.Pokemon(name, this.data.pokedex[id], this.data.learnsets[id], this.data.formatsData[id]);
+		pokemon = new Data.Pokemon(name, this.data.pokedex[id], null, this.data.formatsData[id]);
 		if (!pokemon.tier && !pokemon.doublesTier && pokemon.baseSpecies !== pokemon.species) {
 			if (pokemon.baseSpecies === 'Mimikyu') {
 				pokemon.tier = this.data.formatsData[this.toId(pokemon.baseSpecies)].tier;
