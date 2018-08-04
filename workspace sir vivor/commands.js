@@ -3,27 +3,12 @@
  *
  * @license MIT license
  */
-var GoogleSpreadsheet = require('google-spreadsheet');
-var async = require('async');
- 
-// spreadsheet key is the long id in the sheets URL 
 
-
-
-// If modifying these scopes, delete your previously saved credentials
-// at ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json
-
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
- */
+ // spreadsheet key is the long id in the sheets URL 
 
 var http = require('http');
 var cb = require('origindb')('lb');
-var _ = require('lodash');
-var hostQueue = [];
-var queueText = '';
-var ids = [];
+var _ = require('lodash');;
  
 let millisToTime = function(millis){
 	let seconds = millis/1000;
@@ -40,7 +25,6 @@ let millisToTime = function(millis){
 if (Config.serverid === 'showdown')
 {
 	var https = require('https');
-	var csv = require('csv-parse');
 }
 
 var host = '';
