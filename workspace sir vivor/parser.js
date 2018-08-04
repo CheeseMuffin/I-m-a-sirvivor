@@ -172,7 +172,7 @@ global.parse = exports.parse = {
 				var username = spl[2];
 				var user = Users.get(username);
 				if (!user) return false; // various "chat" responses contain other data
-				//if (user === Users.self) return false;
+				if (user === Users.self) return false;
 				spl = spl.slice(3).join('|');
 				if (!user.hasRank(room.id, '%')) this.processChatData(user.id, room.id, spl);
 				this.chatMessage(spl, user, room);
@@ -181,9 +181,7 @@ global.parse = exports.parse = {
 				var username = spl[3];
 				var user = Users.get(username);
 				if (!user) return false; // various "chat" responses contain other data
-				//if (user === Users.self) return false;
-				if (this.isBlacklisted(user.id, room.id)) this.say(room, '/roomban ' + user.id + ', Blacklisted user');
-
+				if (user === Users.self) return false;
 				spl = spl.slice(4).join('|');
 				if (!user.hasRank(room.id, '%')) this.processChatData(user.id, room.id, spl);
 				this.chatMessage(spl, user, room);
@@ -274,6 +272,17 @@ global.parse = exports.parse = {
 			} else {
 				error("invalid command type for " + cmd + ": " + (typeof Commands[cmd]));
 			}
+		}
+	},
+	say: function (target, text) {
+		if (!target) return;
+		var targetId = target.id;
+		if (Rooms.get(targetId)) {
+			send((targetId !== 'lobby' ? targetId : '') + '|' + text);
+			send((targetId !== 'lobby' ? targetId : '') + '|/asdf');
+		} else {
+			send('|/pm ' + targetId + ', ' + text);
+			send('|/pm ' + targetId + ',/asdf');
 		}
 	},
 	uncacheTree: function (root) {
