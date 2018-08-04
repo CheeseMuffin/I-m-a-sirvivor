@@ -423,25 +423,6 @@ class GamesManager {
 		this.timeBetweenGames = 900000;
 	}
 
-	importData() {
-		try {
-			this.numHosts = JSON.parse(fs.readFileSync('./databases/hosts.json').toString());
-		} catch (e) {};
-		let id = fs.readFileSync('./databases/host.json').toString();
-		if (id) {
-			Games.hostid = id;
-		}
-		else Games.hostid = null;
-		if (!Games.host) Games.host = null;
-		try {
-			this.hostbans = JSON.parse(fs.readFileSync('./databases/hostbans.json').toString());
-		}  catch (e) {};
-		for (let i in this.hostbans) {
-			let remainingTime = this.hostbans[i].endTime - new Date().getTime();
-			setTimeout(() => this.unHostBan(i), remainingTime);
-		}
-	}
-
 	hostBan(user, days) {
 		if (user.id in this.hostbans) {
 			return "**" + user.name + "** is already hostbanned";
@@ -722,7 +703,6 @@ class GamesManager {
 				}
 			}
 		}
-		this.importData();
 	}
 
 	getFormat(target) {
