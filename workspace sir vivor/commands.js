@@ -52,7 +52,7 @@ exports.commands = {
 	},
 
 	addcustom: function (target, user, room) {
-		if (!user.hasRank(Rooms.get('dreamyard'), '#')) return;
+		if (!user.hasRank('dreamyard', '#')) return;
 		let resp = Customs.parse(target);
 		if (typeof resp == 'string') {
 			room.say(resp);
@@ -63,7 +63,7 @@ exports.commands = {
 	},
 
 	addcustomalias: function (target, user, room) {
-		if (!user.hasRank(Rooms.get('dreamyard'), '#')) return;
+		if (!user.hasRank('dreamyard', '#')) return;
 		let resp = Customs.parse(target);
 		if (typeof resp == 'string') {
 			room.say(resp);
