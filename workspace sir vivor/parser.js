@@ -183,7 +183,6 @@ global.parse = exports.parse = {
 				if (!user) return false; // various "chat" responses contain other data
 				if (user === Users.self) return false;
 				spl = spl.slice(4).join('|');
-				if (!user.hasRank(room.id, '%')) this.processChatData(user.id, room.id, spl);
 				this.chatMessage(spl, user, room);
 				break;
 			case 'popup':
@@ -218,23 +217,15 @@ global.parse = exports.parse = {
 				var username = spl[2];
 				var oldid = spl[3];
 				var user = room.onRename(username, oldid);
-				this.updateSeen(oldid, spl[1], user.id);
 				break;
 			case 'J': case 'j':
 				var username = spl[2];
 				var user = room.onJoin(username, username.charAt(0));
 				if (user === Users.self) return false;
-				this.updateSeen(user.id, spl[1], room.id);
 				break;
 			case 'l': case 'L':
 				var username = spl[2];
 				var user = room.onLeave(username);
-				if (user) {
-					if (user === Users.self) return false;
-					this.updateSeen(user.id, spl[1], room.id);
-				} else {
-					this.updateSeen(toId(username), spl[1], room.id);
-				}
 				break;
 		}
 	},

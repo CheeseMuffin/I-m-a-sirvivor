@@ -64,11 +64,7 @@ class Game {
 	}
 
 	signups() {
-		if (this.room.id === 'trivia') {
-			this.say("triviasignups! If you would like to join the ~~gulag~~ game, do ``/me in``");
-		} else {
-			this.say("survgame! If you would like to play the game of **" + this.name + "**, use the command ``/me in``");
-		}
+		this.say("Hosting " + this.name + (this.freeJoin ? " (free join)!" : ". If you like to join, use the command ``.join``"));
 		if (this.description) this.say("**" + this.name + "**: " + this.description);
 		if (typeof this.onSignups === 'function') this.onSignups();
 		this.timeout = setTimeout(() => this.start(), 5 * 60 * 1000);
@@ -94,10 +90,6 @@ class Game {
 	start() {
 		try {
 			if (this.started || this.ended) return;
-			if (this.playerCount < 2) {
-				this.say("The game needs at least two players to start!");
-				return;
-			}
 			this.started = true;
 			if (typeof this.onStart === 'function') this.onStart();
 		} catch (e) {
@@ -135,12 +127,6 @@ class Game {
 	}
 
 	end() {
-		if (this.getRemainingPlayerCount() === 1) {
-			let winPlayer = this.getLastPlayer();
-			this.say("**Winner:** " + winPlayer.name);
-		} else if (this.getRemainingPlayerCount() === 0) {
-			this.say("Everybody was killed!");
-		}
 		Games.lastGameTime = new Date().getTime();
 		if (this.ended) return;
 		if (this.timeout) clearTimeout(this.timeout);
@@ -163,10 +149,6 @@ class Game {
 		try {
 			if (this.timeout) clearTimeout(this.timeout);
 			this.round++;
-			if (this.getRemainingPlayerCount() < 2) {
-				this.end();
-				return;
-			}
 			if (typeof this.onNextRound === 'function') this.onNextRound();
 		} catch (e) {
 			this.mailbreak(e);

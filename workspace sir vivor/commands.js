@@ -96,8 +96,6 @@ exports.commands = {
 
     signups: function (target, user, room) {
 		if (!user.hasRank(room.id, '+')) return;
-		if (!Config.allowGames) return room.say("I will be restarting soon, please refrain from beginning any games.");
-		if (Games.host) return room.say(Games.host.name + " is hosting a game.");
 		if (room.game) return room.say("A game of " + room.game.name + " is in progress.");
 		let id = Tools.toId(target);
 		if (!Games.createGame(target, room)) return;
@@ -106,8 +104,6 @@ exports.commands = {
 	randgame: "randomgame",
 	randomgame: function (arg, user, room) {
 	    if (!user.hasRank(room.id, '+')) return;
-		if (!Config.allowGames) return room.say("I will be restarting soon, please refrain from beginning any games.");
-		if (Games.host) return room.say(Games.host.name + " is hosting a game.");
 		if (room.game) return room.say("A game of " + room.game.name + " is in progress.");
 		let goodids = Object.keys(Games.games).slice();
 		goodids = goodids.concat(Object.keys(Games.aliases));
