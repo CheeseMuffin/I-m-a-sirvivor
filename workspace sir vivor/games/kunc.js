@@ -23,7 +23,7 @@ class Kunc extends Games.Game {
 
     onSignups() {
         this.started = true;
-        this.timeout = setTimeout(() => this.nextRound(), 0 * 1000);
+        this.timeout = setTimeout(() => this.nextRound(), 10 * 1000);
     }
 
     setAnswers() {
