@@ -4,6 +4,7 @@ const data = {};
 for (let i in Tools.data.pokedex) {
     let mon = Tools.getExistingPokemon(i);
     let randBatMoves = mon.randomBattleMoves;
+    if (mon.evos || mon.isNonstandard) continue;
     if (!randBatMoves) continue;
     if (randBatMoves.length < 4) continue;
     data[mon.species] = randBatMoves;
