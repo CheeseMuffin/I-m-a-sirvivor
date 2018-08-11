@@ -101,6 +101,7 @@ exports.commands = {
 		if (!Games.createGame(target, room)) return;
 		room.game.signups();
 	},
+
 	randgame: "randomgame",
 	randomgame: function (arg, user, room) {
 	    if (!user.hasRank(room.id, '+')) return;
@@ -109,24 +110,17 @@ exports.commands = {
 		goodids = goodids.concat(Object.keys(Games.aliases));
 		let id = Tools.sample(goodids);
 		Games.createGame(id, room);
-		while (room.game.baseId === Games.lastGame || id === 'ssb' || id === 'supersurvivorbros') {
+		while (room.game.baseId === Games.lastGame) {
 			id = Tools.sample(goodids);
 			Games.createGame(id, room);
 		}
-		console.log(id);
 		room.game.signups();
 	},
 
 	endgame: 'end',
 	end: function (target, user, room) {
 		if (!user.hasRank(room.id, '+')) return;
-		if (!room.game) {
-			if (Games.host) {
-				Games.host = null;
-				this.say(room, 'The game was forcibly ended.');
-			}
-			return;
-		}
+		if (!room.game) return;
 		room.game.forceEnd();
 	},
 

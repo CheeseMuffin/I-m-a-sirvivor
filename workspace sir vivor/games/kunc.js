@@ -14,6 +14,7 @@ console.log(Object.keys(data).length);
 const name = "KUNC";
 class Kunc extends Games.Game {
     constructor(room) {
+        console.log("got constructed");
         super(room);
         this.freeJoin = true;
         this.answers = [];

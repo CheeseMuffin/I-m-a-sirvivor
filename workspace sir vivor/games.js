@@ -137,12 +137,12 @@ class Game {
 
 	forceEnd() {
 		if (this.ended) return;
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-		}
-		this.say("The game was forcibly ended.");
-		this.ended = true;
-		this.room.game = null;
+		this.say("Sorry, ending games doesn't work right now...");
+		return;
+		//clearTimeout(this.timeout);
+		//this.say("The game was forcibly ended.");
+		//this.ended = true;
+		//this.room.game = null;
 	}
 
 	nextRound() {
