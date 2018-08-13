@@ -104,12 +104,14 @@ class Customs {
     }
 
     addQuote(phrase, room) {
+        if (!phrase) return 'Usage: ``.quote [quote]``';
         this.quotes[Tools.toId(phrase)] = phrase.trim();
         this.exportDatabases();
         return room.say("Quote added");
     }
 
     removeQuote(phrase, room) {
+        if (!phrase) return 'Usage: ``.removequote [quote]``';
         let id = Tools.toId(phrase);
         if (!(id in this.quotes)) {
             return room.say("There is no quote matching __" + phrase + "__");
@@ -122,6 +124,14 @@ class Customs {
     sayRandomQuote(room) {
         let id = Tools.sampleOne(Object.keys(this.quotes));
         room.say("__" + this.quotes[id] + "__");
+    }
+
+    listQuotes(room) {
+        let text = Object.values(this.quotes).join("\n");
+        Tools.uploadToHastebin(text, (success, link) => {
+			if (success) room.say(link);
+            else user.say('Error connecting to hastebin.');
+        });
     }
 }
 

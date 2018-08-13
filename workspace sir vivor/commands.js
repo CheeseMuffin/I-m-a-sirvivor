@@ -79,6 +79,12 @@ exports.commands = {
 		Customs.addQuote(target, room);
 	},
 
+	listquotes: 'quotes',
+	quotes: function (target, user, room) {
+		if (!user.hasRank('dreamyard', '%')) return;
+		Customs.listQuotes(room);
+	},
+
 	deletequote: 'removequote',
 	delquote: 'removequote',
 	removequote: function (target, user, room) {

@@ -754,12 +754,12 @@ class Tools {
 					key = pageData.key;
 				} catch (e) {
 					if (/^[^<]*<!DOCTYPE html>/.test(data)) {
-						return callback('Cloudflare-related error uploading to Hastebin: ' + e.message);
+						return callback(false, 'Cloudflare-related error uploading to Hastebin: ' + e.message);
 					} else {
-						return callback('Unknown error uploading to Hastebin: ' + e.message);
+						return callback(false, 'Unknown error uploading to Hastebin: ' + e.message);
 					}
 				}
-				callback('https://hastebin.com/raw/' + key);
+				callback(true, 'https://hastebin.com/raw/' + key);
 			});
 		});
 
