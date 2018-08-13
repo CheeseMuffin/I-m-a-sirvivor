@@ -73,6 +73,25 @@ exports.commands = {
 		room.say("A custom alias has been added for **" + resp[0] + "**.");
 	},
 
+	quote: 'addquote',
+	addquote: function (target, user, room) {
+		if (!user.hasRank('dreamyard', '#')) return;
+		Customs.addQuote(target, room);
+	},
+
+	deletequote: 'removequote',
+	delquote: 'removequote',
+	removequote: function (target, user, room) {
+		if (!user.hasRank('dreamyard', '#')) return;
+		Customs.removeQuote(target, room);
+	},
+
+	randomquote: 'randquote',
+	randquote: function (target, user, room) {
+		if (!user.hasRank('dreamyard', '%')) return;
+		Customs.sayRandomQuote(room);
+	},
+
 	autostart: function (target, user, room) {
 		if (!user.hasRank(room.id, '+')) return;
 		if (room.game && typeof room.game.autostart === 'function') room.game.autostart(target);

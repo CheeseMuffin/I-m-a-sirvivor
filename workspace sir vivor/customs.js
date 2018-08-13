@@ -14,16 +14,19 @@ const BACKUP_INTERVAL = 60 * 60 * 1000;
 
 const CUSTOMS_FILE = "./databases/customs.json";
 const CUSTOM_ALIASES_FILE = "./databases/custom-aliases.json";
+const QUOTES_FILE = "./databases/quotes.json";
 
 class Customs {
 	constructor() {
         this.customs = {};
         this.customAliases = {};
+        this.quotes = {};
     }
 
     exportDatabases() {
         this.exportDatabaseToFile(this.customs, CUSTOMS_FILE);
         this.exportDatabaseToFile(this.customAliases, CUSTOM_ALIASES_FILE);
+        this.exportDatabaseToFile(this.quotes, QUOTES_FILE);
     }
 
     exportDatabaseToFile(database, fileName) {
@@ -41,6 +44,11 @@ class Customs {
             file = fs.readFileSync(CUSTOM_ALIASES_FILE).toString();
         } catch (e) {}
         this.customAliases = JSON.parse(file);
+        file = '{}';
+        try {
+            file = fs.readFileSync(QUOTES_FILE).toString();
+        } catch (e) {}
+        this.quotes = JSON.parse(file);
         this.updateCommands();
     }
 
@@ -93,6 +101,27 @@ class Customs {
         this.customAliases[textArray[0]] = Tools.toId(textArray[1]);
         this.updateCommands();
         this.exportDatabases();
+    }
+
+    addQuote(phrase, room) {
+        this.quotes[Tools.toId(phrase)] = phrase.trim();
+        this.exportDatabases();
+        return room.say("Quote added");
+    }
+
+    removeQuote(phrase, room) {
+        let id = Tools.toId(phrase);
+        if (!(id in this.quotes)) {
+            return room.say("There is no quote matching __" + phrase + "__");
+        }
+        delete this.quotes[id];
+        this.exportDatabases();
+        return room.say("Quote deleted.");
+    }
+
+    sayRandomQuote(room) {
+        let id = Tools.sampleOne(Object.keys(this.quotes));
+        room.say("__" + this.quotes[id] + "__");
     }
 }
 
