@@ -151,6 +151,9 @@ global.parse = exports.parse = {
 					room.game.handlehtml(spl[2]);
 				}
 				break;
+			case 'uhtml':
+				if (spl[2].startsWith("uno-")) room.say("unogame!");
+				break;
 			case 'battle':
 				Battles.handleMessage(splitMessage.join("|"));
 			case 'updateuser':
