@@ -61,6 +61,11 @@ exports.commands = {
 		Customs.addCustom(resp);
 		room.say("A custom command has been added for **" + resp[0] + "**.");
 	},
+
+	rmcustom: function (target, user, room) {
+		if (!user.hasRank('dreamyard', '#')) return;
+		Customs.removeCustom(target, room);
+	},
 	
 	addtrivia: function (target, user, room) {
 		if (!user.hasRank('dreamyard', '#')) return;

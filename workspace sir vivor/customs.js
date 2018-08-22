@@ -20,6 +20,7 @@ const TRIVIA_FILE = "./databases/trivia.json";
 class Customs {
 	constructor() {
         this.customs = {};
+        this.deletedCustoms = [];
         this.customAliases = {};
         this.quotes = {};
         this.trivia = {};
@@ -101,6 +102,12 @@ class Customs {
             }
         }
 
+        for (let custom of this.deletedCustoms) {
+            if (custom in Commands) {
+                delete Commands[custom];
+            }
+        }
+
         for (let alias in this.customAliases) {
             if (alias in Commands) {
                 delete Commands[alias];
@@ -125,6 +132,20 @@ class Customs {
         this.customs[textArray[0]] = textArray[1];
         this.updateCommands();
         this.exportDatabases();
+    }
+
+    removeCustom(text, room) {
+        let id = Tools.toId(text);
+        if (!(id in this.customs || id in this.customAliases)) {
+            return room.say("No custom matching **" + text + "** was found");
+        }
+
+        if (id in this.customs) delete this.customs[id];
+        if (id in this.customAliases) delete this.customAliases[id];
+        this.deletedCustoms.push(id);
+        this.updateCommands();
+        this.exportDatabases();
+        room.say("Custom command successfully removed.");
     }
 
     addCustomAlias(textArray) {
