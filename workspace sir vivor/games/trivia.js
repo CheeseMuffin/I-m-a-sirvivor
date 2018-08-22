@@ -1,18 +1,7 @@
 'use strict';
 
-const data = {};
-for (let i in Tools.data.pokedex) {
-    let mon = Tools.getExistingPokemon(i);
-    let randBatMoves = mon.randomBattleMoves;
-    if (Tools.toId(mon.baseSpecies) !== i) continue;
-    if (mon.evos.length || mon.isNonstandard) continue;
-    if (!randBatMoves) continue;
-    if (randBatMoves.length < 4) continue;
-    data[mon.species] = randBatMoves;
-}
-
-const name = "KUNC";
-class Kunc extends Games.Game {
+const name = "Trivia";
+class Trivia extends Games.Game {
     constructor(room) {
         super(room);
         this.freeJoin = true;
@@ -20,6 +9,7 @@ class Kunc extends Games.Game {
         this.timeout = null;
         this.points = new Map();
         this.maxPoints = 5;
+        this.questionOrder = Tools.shuffle(Object.keys(Customs.trivia));
     }
 
     onSignups() {
@@ -28,9 +18,15 @@ class Kunc extends Games.Game {
     }
 
     setAnswers() {
-        let answer = Tools.sampleOne(Object.keys(data));
-        this.answers = [answer];
-        this.hint = "Moves: __" + Tools.sampleMany(data[answer], 4).map(move => Tools.getExistingMove(move).name).join("__, __") + "__";
+        if (this.questionOrder.length == 0) {
+            this.say("No more questions left!");
+            this.end();
+            return;
+        }
+        let q = this.questionOrder.shift();
+        let data = Customs.trivia[q];
+        this.answers = [data.answer];
+        this.hint = "__" + data.question + "__";
     }
 
     onNextRound() {
@@ -87,7 +83,7 @@ class Kunc extends Games.Game {
 	}
 }
 
-exports.game = Kunc;
+exports.game = Trivia;
 exports.name = name;
 exports.id = Tools.toId(name);
 exports.commands = {

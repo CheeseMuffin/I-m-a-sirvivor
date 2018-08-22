@@ -52,6 +52,7 @@ class Game {
 			}
 		}
 		this.say("I'm sorry, the game broke. Cheese has been notified and will fix it as soon as they can.");
+		console.log(e);
 		this.end();
 	}
 

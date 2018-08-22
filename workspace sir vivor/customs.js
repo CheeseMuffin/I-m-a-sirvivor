@@ -15,18 +15,21 @@ const BACKUP_INTERVAL = 60 * 60 * 1000;
 const CUSTOMS_FILE = "./databases/customs.json";
 const CUSTOM_ALIASES_FILE = "./databases/custom-aliases.json";
 const QUOTES_FILE = "./databases/quotes.json";
+const TRIVIA_FILE = "./databases/trivia.json";
 
 class Customs {
 	constructor() {
         this.customs = {};
         this.customAliases = {};
         this.quotes = {};
+        this.trivia = {};
     }
 
     exportDatabases() {
         this.exportDatabaseToFile(this.customs, CUSTOMS_FILE);
         this.exportDatabaseToFile(this.customAliases, CUSTOM_ALIASES_FILE);
         this.exportDatabaseToFile(this.quotes, QUOTES_FILE);
+        this.exportDatabaseToFile(this.trivia, TRIVIA_FILE);
     }
 
     exportDatabaseToFile(database, fileName) {
@@ -34,6 +37,7 @@ class Customs {
     }
 
     importDatabases() {
+        // Custom Commands
         let file = '{}';
         try {
             file = fs.readFileSync(CUSTOMS_FILE).toString();
@@ -44,20 +48,46 @@ class Customs {
             file = fs.readFileSync(CUSTOM_ALIASES_FILE).toString();
         } catch (e) {}
         this.customAliases = JSON.parse(file);
+
+        // Quotes
         file = '{}';
         try {
             file = fs.readFileSync(QUOTES_FILE).toString();
         } catch (e) {}
         this.quotes = JSON.parse(file);
         this.updateCommands();
+
+        // Trivia
+        file = '{}'
+        try {
+            file = fs.readFileSync(TRIVIA_FILE).toString();
+        } catch (e) {};
+        this.trivia = JSON.parse(file);
     }
 
-    importDatabase(database, fileName) {
-        let file = '{}';
-        try {
-            file = fs.readFileSync(fileName).toString();
-        } catch (e) {}
-        database = JSON.parse(file);
+    addTriviaQuestion(target, room) {
+        let split = target.split("|");
+        if (split.length !== 2) {
+            return room.say("You must specify a question and an answer, in the form: ``Question|Answer``");
+        }
+        let question = split[0].trim();
+        let answer = split[1].trim();
+        this.trivia[Tools.toId(question)] = {
+            question: question,
+            answer: answer,
+        };
+        this.exportDatabaseToFile(this.trivia, TRIVIA_FILE);
+        room.say("Question successfully added.");
+    }
+
+    removeTriviaQuestion(target, room) {
+        let questionid = Tools.toId(target);
+        if (!(questionid in this.trivia)) {
+            return room.say("No question matching **" + target + "** was found.");
+        }
+        delete this.trivia[questionid];
+        this.exportDatabaseToFile(this.trivia, TRIVIA_FILE);
+        room.say("Question successfully deleted.");
     }
 
     updateCommands() {
