@@ -130,11 +130,6 @@ exports.commands = {
 		if (room.game && typeof room.game.pl === 'function') room.game.pl();
 	},
 
-	join: function (arg, user, room) {
-		if (!user.isExcepted()) return false;
-		this.say(room, '/join ' + arg);
-	},
-
     signups: function (target, user, room) {
 		if (!user.hasRank(room.id, '+')) return;
 		if (room.game) return room.say("A game of " + room.game.name + " is in progress.");

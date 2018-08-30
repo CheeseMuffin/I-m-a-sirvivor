@@ -245,6 +245,10 @@ class Tools {
 		if (trainerClasses) this.data.trainerClasses = trainerClasses;
 	}
 
+	turnFirstUpper(str) {
+		return str[0].toUpperCase() + str.substr(1).toLowerCase();
+	}
+
 	/**
 	 * @param {any} text
 	 * @return {string}

@@ -43,6 +43,8 @@ class Game {
 		this.rollSwitch = false;
 		this.max = false;
 		this.sum = true;
+		this.hasNum = false;
+		this.numVar = 0;
 	}
 
 	mailbreak(e) {
@@ -66,6 +68,7 @@ class Game {
 
 	signups() {
 		this.say("Hosting " + this.name + (this.freeJoin ? " (free join)!" : ". If you like to join, use the command ``.join``"));
+		if (typeof this.updateDescription === 'function') this.updateDescription();
 		if (this.description) this.say("**" + this.name + "**: " + this.description);
 		if (typeof this.onSignups === 'function') this.onSignups();
 		this.timeout = setTimeout(() => this.start(), 5 * 60 * 1000);
@@ -128,6 +131,10 @@ class Game {
 	}
 
 	end() {
+		if (this.getRemainingPlayerCount() === 1) {
+			let winPlayer = this.getLastPlayer();
+			this.say("**Winner:** " + winPlayer.name);
+		} 
 		Games.lastGameTime = new Date().getTime();
 		if (this.ended) return;
 		if (this.timeout) clearTimeout(this.timeout);
@@ -136,14 +143,21 @@ class Game {
 		this.room.game = null;
 	}
 
+	getLastPlayer() {
+		let remainingPlayers = this.getRemainingPlayers();
+		return remainingPlayers[Object.keys(remainingPlayers)[0]];
+	}
+
 	forceEnd() {
 		if (this.ended) return;
-		this.say("Sorry, ending games doesn't work right now...");
-		return;
-		//clearTimeout(this.timeout);
-		//this.say("The game was forcibly ended.");
-		//this.ended = true;
-		//this.room.game = null;
+		if (this.id === 'kunc') {
+			this.say("Sorry, ending KUNC games doesn't work right now...");
+			return;
+		}
+		clearTimeout(this.timeout);
+		this.say("The game was forcibly ended.");
+		this.ended = true;
+		this.room.game = null;
 	}
 
 	nextRound() {
@@ -702,6 +716,11 @@ class GamesManager {
 		let variation, mode;
 		for (let i = 0, len = target.length; i < len; i++) {
 			let id = Tools.toId(target[i]);
+			let parsed = parseInt(id);
+			if (parsed) {
+				format.numVar = parsed;
+			}
+			console.log(format);
 			if (format.variations) {
 				if (format.variationAliases && id in format.variationAliases) id = format.variationAliases[id];
 				if (id in format.variations) variation = format.variations[id];

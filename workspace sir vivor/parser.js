@@ -234,6 +234,9 @@ global.parse = exports.parse = {
 	},
 	chatMessage: function (message, user, room) {
 		if (!room) return;
+		if (message.substr(0, 6) === '/me in' && room.game) {
+			room.game.join(user);
+		}
 		if (message.substr(0, Config.commandcharacter.length) !== Config.commandcharacter) return false;
 		message = message.substr(Config.commandcharacter.length);
 		var index = message.indexOf(' ');
