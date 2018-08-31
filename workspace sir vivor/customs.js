@@ -92,6 +92,11 @@ class Customs {
     }
 
     updateCommands() {
+        for (let custom of this.deletedCustoms) {
+            if (custom in Commands) {
+                delete Commands[custom];
+            }
+        }
         for (let name in this.customs) {
             if (name in Commands) {
                 delete Commands[name];
@@ -99,12 +104,6 @@ class Customs {
             let response = this.customs[name];
             Commands[name] = function (target, user, room) {
                 room.say(response);
-            }
-        }
-
-        for (let custom of this.deletedCustoms) {
-            if (custom in Commands) {
-                delete Commands[custom];
             }
         }
 
