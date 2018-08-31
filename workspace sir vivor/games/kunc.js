@@ -1,17 +1,8 @@
 'use strict';
 
-const data = {};
-for (let i in Tools.data.pokedex) {
-    let mon = Tools.getExistingPokemon(i);
-    let randBatMoves = mon.randomBattleMoves;
-    if (Tools.toId(mon.baseSpecies) !== i) continue;
-    if (mon.evos.length || mon.isNonstandard) continue;
-    if (!randBatMoves) continue;
-    if (randBatMoves.length < 4) continue;
-    data[mon.species] = randBatMoves;
-}
-
 const name = "KUNC";
+const kuncSets = require('../data/kunc-sets.json');
+
 class Kunc extends Games.Game {
     constructor(room) {
         super(room);
@@ -28,9 +19,9 @@ class Kunc extends Games.Game {
     }
 
     setAnswers() {
-        let answer = Tools.sampleOne(Object.keys(data));
-        this.answers = [answer];
-        this.hint = "Moves: __" + Tools.sampleMany(data[answer], 4).map(move => Tools.getExistingMove(move).name).join("__, __") + "__";
+        let set = Tools.sampleOne(kuncSets);
+        this.answers = [set[0]];
+        this.hint = "__" + set[1].map(arr => arr[0]).join(", ") + "__";
     }
 
     onNextRound() {
