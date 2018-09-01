@@ -236,6 +236,8 @@ global.parse = exports.parse = {
 		if (!room) return;
 		if (message.substr(0, 6) === '/me in' && room.game) {
 			room.game.join(user);
+		} else if (message.substr(0, 7) === '/me out' && room.game) {
+			room.game.leave(user);
 		}
 		if (message.substr(0, Config.commandcharacter.length) !== Config.commandcharacter) return false;
 		message = message.substr(Config.commandcharacter.length);

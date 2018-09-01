@@ -88,6 +88,17 @@ exports.commands = {
 		Customs.addCustomAlias(resp);
 		room.say("A custom alias has been added for **" + resp[0] + "**.");
 	},
+	
+	join: 'joingame',
+	joingame: function (target, room, user) {
+		if (room instanceof Users.User || !room.game) return;
+		room.game.join(user);
+	},
+	leave: 'leavegame',
+	leavegame: function (target, room, user) {
+		if (room instanceof Users.User || !room.game) return;
+		room.game.leave(user);
+	},
 
 	quote: 'addquote',
 	addquote: function (target, user, room) {
