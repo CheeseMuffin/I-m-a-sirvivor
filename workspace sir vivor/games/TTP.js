@@ -97,6 +97,7 @@ class TTP extends Games.Game {
 				names.push("**" + this.oplayer.name + "**");
 			}
 			this.say(names.join(" and ") + (names.length > 1 ?  " were both" : " was") + " mked for not playing a mon!");
+			this.stat = null;
 		} else if (this.statPlayer) {
 			this.say("**" + this.statPlayer.name + "** didn't choose a stat and is eliminated!");
 			this.statPlayer.eliminated = true;

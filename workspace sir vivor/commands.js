@@ -91,12 +91,12 @@ exports.commands = {
 	
 	join: 'joingame',
 	joingame: function (target, user, room) {
-		if (room instanceof Users.User || !room.game) return;
+		if (!room.game) return;
 		room.game.join(user);
 	},
 	leave: 'leavegame',
 	leavegame: function (target, user, room) {
-		if (room instanceof Users.User || !room.game) return;
+		if (!room.game) return;
 		room.game.leave(user);
 	},
 
