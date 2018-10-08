@@ -121,7 +121,7 @@ exports.commands = {
 
 	randomquote: 'randquote',
 	randquote: function (target, user, room) {
-		if (!user.hasRank('dreamyard', '%')) return;
+		if (!user.hasRank('dreamyard', '+')) return;
 		Customs.sayRandomQuote(room);
 	},
 
