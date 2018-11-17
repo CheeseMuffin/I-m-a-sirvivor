@@ -112,6 +112,13 @@ exports.commands = {
 		Customs.listQuotes(room);
 	},
 
+	listcommands: 'commands',
+	customs: 'commands',
+	commands: function (target, user, room) {
+		if (!user.hasRank('dreamyard', '@')) return;
+		Customs.listCommands(room);
+	},
+
 	deletequote: 'removequote',
 	delquote: 'removequote',
 	removequote: function (target, user, room) {

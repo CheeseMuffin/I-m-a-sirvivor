@@ -180,7 +180,15 @@ class Customs {
         let text = Object.values(this.quotes).join("\n");
         Tools.uploadToHastebin(text, (success, link) => {
 			if (success) room.say(link);
-            else user.say('Error connecting to hastebin.');
+            else room.say('Error connecting to hastebin: ' + link);
+        });
+    }
+
+    listCommands(room) {
+        let text = Object.keys(this.customs).map(key => key + ": " + this.customs[key]).join("\n");
+        Tools.uploadToHastebin(text, (success, link) => {
+			if (success) room.say(link);
+            else room.say('Error connecting to hastebin: ' + link);
         });
     }
 }
